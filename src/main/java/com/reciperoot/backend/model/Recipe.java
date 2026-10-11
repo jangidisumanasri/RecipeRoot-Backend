@@ -1,6 +1,9 @@
+
 package com.reciperoot.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,13 +28,12 @@ public class Recipe {
 
     private Integer servings;
 
-    @ElementCollection
-    @CollectionTable(
-        name = "recipe_ingredients",
-        joinColumns = @JoinColumn(name = "recipe_id")
+    @OneToMany(
+        mappedBy = "recipe",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
     )
-    @Column(name = "ingredient")
-    private List<String> ingredients = new ArrayList<>();
+    private List<RecipeIngredient> ingredientItems = new ArrayList<>();
 
     @Column(columnDefinition = "TEXT")
     private String instructions;
@@ -95,12 +97,26 @@ public class Recipe {
         this.servings = servings;
     }
 
+    @JsonProperty("ingredients")
     public List<String> getIngredients() {
-        return ingredients;
+        return ingredientItems.stream()
+            .map(RecipeIngredient::getIngredient)
+            .toList();
     }
 
+    @JsonProperty("ingredients")
     public void setIngredients(List<String> ingredients) {
-        this.ingredients = ingredients;
+        ingredientItems.clear();
+
+        if (ingredients != null) {
+            for (String ingredient : ingredients) {
+                if (ingredient != null && !ingredient.isBlank()) {
+                    ingredientItems.add(
+                        new RecipeIngredient(this, ingredient.trim())
+                    );
+                }
+            }
+        }
     }
 
     public String getInstructions() {
