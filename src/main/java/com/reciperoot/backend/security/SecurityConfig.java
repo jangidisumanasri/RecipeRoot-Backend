@@ -1,4 +1,5 @@
 package com.reciperoot.backend.security;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -50,14 +51,15 @@ public class SecurityConfig {
         ));
 
         config.setAllowedMethods(List.of(
-            "GET", "POST", "PUT", "PATCH",
-            "DELETE", "OPTIONS"
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS"
         ));
 
-        config.setAllowedHeaders(List.of(
-            "Content-Type", "Authorization"
-        ));
-
+        config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source =
