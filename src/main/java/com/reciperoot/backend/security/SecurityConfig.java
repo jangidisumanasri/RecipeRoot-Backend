@@ -50,7 +50,7 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
             "http://localhost:5173",
             "http://127.0.0.1:5173",
-            "https://YOUR-VERCEL-DOMAIN.vercel.app"
+            "https:"https://recipe-root-frontend.vercel.app"
         ));
 
         config.setAllowedMethods(List.of(
