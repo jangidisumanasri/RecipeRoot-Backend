@@ -11,20 +11,32 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class TokenService {
 
-    public record SessionUser(Long id, String name, String email, String role) {}
+    public record SessionUser(
+            Long id,
+            String name,
+            String email,
+            String role) {}
 
-    private final Map<String, SessionUser> tokens = new ConcurrentHashMap<>();
+    private final Map<String, SessionUser> tokens =
+            new ConcurrentHashMap<>();
+
     private final SecureRandom random = new SecureRandom();
 
     public String createToken(AppUser user) {
         byte[] bytes = new byte[32];
         random.nextBytes(bytes);
+
         String token = Base64.getUrlEncoder()
-                .withoutPadding().encodeToString(bytes);
+                .withoutPadding()
+                .encodeToString(bytes);
 
         tokens.put(token, new SessionUser(
-                user.getId(), user.getName(), user.getEmail(), user.getRole()
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole()
         ));
+
         return token;
     }
 
