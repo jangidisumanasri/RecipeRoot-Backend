@@ -1,6 +1,4 @@
-
-package com.reciperoot.backend.config;
-
+package com.reciperoot.backend.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -33,8 +31,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(
-                    HttpMethod.GET,
-                    "/api/recipes/**"
+                    HttpMethod.GET, "/api/recipes/**"
                 ).permitAll()
                 .anyRequest().permitAll()
             );
@@ -44,27 +41,21 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
             "http://localhost:5173",
             "http://127.0.0.1:5173",
-            "https:"https://recipe-root-frontend.vercel.app"
+            "https://recipe-root-frontend.vercel.app"
         ));
 
         config.setAllowedMethods(List.of(
-            "GET",
-            "POST",
-            "PUT",
-            "PATCH",
-            "DELETE",
-            "OPTIONS"
+            "GET", "POST", "PUT", "PATCH",
+            "DELETE", "OPTIONS"
         ));
 
         config.setAllowedHeaders(List.of(
-            "Content-Type",
-            "Authorization"
+            "Content-Type", "Authorization"
         ));
 
         config.setAllowCredentials(false);
